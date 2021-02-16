@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fsancho.poke_rest.config.redis.CacheConfig;
 import com.fsancho.poke_rest.model.PokemonDTO;
 import com.fsancho.poke_rest.model.PokemonResponse;
 import com.fsancho.poke_rest.service.PokemonService;
@@ -32,8 +34,7 @@ public class PokemonServiceImpl implements PokemonService{
     @Autowired
     RestTemplate restTemplate;
 
-    // @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result ==
-    // null")
+    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
     @Override
     public List<PokemonDTO> searchPokemonLazy(String offset, String limit) {
         logger.info("Obteniendo pokemones desde api - logger");
