@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,80 +18,76 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.fsancho.poke_rest.config.redis.CacheConfig;
 import com.fsancho.poke_rest.dto.EvolutionDTO;
 import com.fsancho.poke_rest.dto.PokemonDTO;
 import com.fsancho.poke_rest.model.Pokemon;
 import com.fsancho.poke_rest.model.PokemonResponse;
 import com.fsancho.poke_rest.service.PokemonService;
 
-
 /**
  * @author Fernando Sancho
  *
  */
 @Service
-public class PokemonServiceImpl implements PokemonService{
-    
-    private static final String API_BASE_URL = "https://pokeapi.co/api/v2";
-    private static final Logger logger = LoggerFactory.getLogger(PokemonServiceImpl.class);
-    
-    @Autowired
-    RestTemplate restTemplate;
+public class PokemonServiceImpl implements PokemonService {
 
-    /**
-     * Este metodo obtiene la lista de pokemones por parametros lazy
-     * */
-    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
-    @Override
-    public List<PokemonDTO> searchPokemonLazy(String offset, String limit) {
-        logger.info("Obteniendo pokemones desde api - logger");
-        String url = API_BASE_URL + "/pokemon?limit=" + limit + "&offset=" + offset;
-        List<PokemonDTO> pokemonesDTO = new ArrayList<>();
-        ResponseEntity<PokemonResponse> response = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(), PokemonResponse.class);
+	private static final Logger logger = LoggerFactory.getLogger(PokemonServiceImpl.class);
+	private static final String API_BASE_URL = "https://pokeapi.co/api/v2";
+	private static final String API_ENDPOINT_POKEMON = "/pokemon/";
+	@Autowired
+	RestTemplate restTemplate;
 
-        List<Pokemon> pokemones = response.getBody().getResults();
-        
+	/**
+	 * Este metodo obtiene la lista de pokemones por parametros lazy
+	 */
+//    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+	@Override
+	public List<PokemonDTO> searchPokemonLazy(String offset, String limit) {
+		logger.info("Obteniendo pokemones desde api - logger");
+		String url = API_BASE_URL + "/pokemon?limit=" + limit + "&offset=" + offset;
+		List<PokemonDTO> pokemonesDTO = new ArrayList<>();
+		ResponseEntity<PokemonResponse> response = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(),
+				PokemonResponse.class);
+
+		List<Pokemon> pokemones = response.getBody().getResults();
+
 		for (Pokemon pokemon : pokemones) {
-			pokemon = findPokemonById(getIdFromPokeUrl(pokemon.getUrl()));
+			pokemon = findPokemonById(API_ENDPOINT_POKEMON + getIdFromPokeUrl(pokemon.getUrl()));
 			PokemonDTO pokemonDTO = new DozerBeanMapper().map(pokemon, PokemonDTO.class);
 			pokemonesDTO.add(pokemonDTO);
 			System.out.println(pokemonDTO);
 		}
-        return pokemonesDTO;
-    }
-    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
-    /**
-     * Este metodo obtiene las evoluciones
-     * */
-	@Override
-    public List<EvolutionDTO> findEvolutions(String id) {
-        String url = API_BASE_URL + "/evolution-chain/" + id;
-        List<EvolutionDTO> evoluciones = new ArrayList<>();
-        HttpEntity<String> entity = getHttpEntity();
-        
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(), String.class);
-        if (response.hasBody())
-    		prepareEvolves(response, evoluciones);
+		return pokemonesDTO;
+	}
 
-        return evoluciones;
-    }
-    
-    /**
-     * Este metodo obtiene el pokemon por id
-     * */
-	@Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+//    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+	/**
+	 * Este metodo obtiene las evoluciones
+	 */
 	@Override
-    public Pokemon findPokemonById(String id) {
-    	String url = API_BASE_URL + "/pokemon/" + id;
+	public List<EvolutionDTO> findEvolutions(String id) {
+		String url = API_BASE_URL + id;
+		List<EvolutionDTO> evoluciones = new ArrayList<>();
+		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(), String.class);
+		if (response.hasBody())
+			prepareEvolves(response, evoluciones);
+
+		return evoluciones;
+	}
+
+	/**
+	 * Este metodo obtiene el pokemon por id
+	 */
+//	@Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+	@Override
+	public Pokemon findPokemonById(String id) {
+		String url = API_BASE_URL + id;
 		ResponseEntity<Pokemon> responseEntity = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(),
 				Pokemon.class);
 		return responseEntity.getBody();
-    }
+	}
 
-    
-
-    private HttpEntity<String> getHttpEntity() {
+	private HttpEntity<String> getHttpEntity() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		headers.add("user-agent",

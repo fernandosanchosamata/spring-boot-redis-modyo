@@ -30,6 +30,9 @@ public class PokemonController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PokemonController.class);
 
+	private static final String API_ENDPOINT_POKEMON = "/pokemon/";
+	private static final String API_ENDPOINT_EVOLUCIONES = "/evolution-chain/";
+
 	@Autowired
 	private PokemonService pokemonService;
 
@@ -37,7 +40,7 @@ public class PokemonController {
 	@ResponseBody
 	public ResponseEntity<?> getPokemones(@RequestParam(value = "offset", required = true) String offset,
 			@RequestParam(value = "limit", required = true) String limit) {
-		List<PokemonDTO> productos = pokemonService.searchPokemonLazy(offset, limit);
+		List<PokemonDTO> productos = this.pokemonService.searchPokemonLazy(offset, limit);
 		logger.info("Devolviendo pokemones");
 		return new ResponseEntity<>(productos, HttpStatus.OK);
 	}
@@ -45,14 +48,15 @@ public class PokemonController {
 	@GetMapping(value = "/evoluciones/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getEvoluciones(@PathVariable("id") String id) {
-		List<EvolutionDTO> productos = pokemonService.findEvolutions(id);
-		logger.info("Devolviendo pokemones");
+		List<EvolutionDTO> productos = this.pokemonService.findEvolutions(API_ENDPOINT_EVOLUCIONES + id);
+		logger.info("Devolviendo evoluciones");
 		return new ResponseEntity<>(productos, HttpStatus.OK);
 	}
 
-	@GetMapping("/information/{id}")
+	@GetMapping("/pokemon/{id}")
 	@ResponseBody
 	Pokemon information(@PathVariable("id") String id) {
-		return pokemonService.findPokemonById(id);
+		logger.info("Devolviendo pokemon");
+		return this.pokemonService.findPokemonById(API_ENDPOINT_POKEMON + id);
 	}
 }
