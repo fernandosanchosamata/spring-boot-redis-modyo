@@ -61,6 +61,7 @@ public class PokemonServiceImpl implements PokemonService{
 		}
         return pokemonesDTO;
     }
+    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
     /**
      * Este metodo obtiene las evoluciones
      * */
@@ -80,6 +81,7 @@ public class PokemonServiceImpl implements PokemonService{
     /**
      * Este metodo obtiene el pokemon por id
      * */
+	@Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
 	@Override
     public Pokemon findPokemonById(String id) {
     	String url = API_BASE_URL + "/pokemon/" + id;
