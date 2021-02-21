@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fsancho.poke_rest.config.redis.CacheConfig;
 import com.fsancho.poke_rest.dto.EvolutionDTO;
 import com.fsancho.poke_rest.dto.PokemonDTO;
 import com.fsancho.poke_rest.model.Pokemon;
@@ -40,7 +42,7 @@ public class PokemonServiceImpl implements PokemonService {
 	/**
 	 * Este metodo obtiene la lista de pokemones por parametros lazy
 	 */
-//    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
 	@Override
 	public List<PokemonDTO> searchPokemonLazy(String offset, String limit) {
 		logger.info("Obteniendo pokemones desde api - logger");
@@ -60,7 +62,7 @@ public class PokemonServiceImpl implements PokemonService {
 		return pokemonesDTO;
 	}
 
-//    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
 	/**
 	 * Este metodo obtiene las evoluciones
 	 */
@@ -78,7 +80,7 @@ public class PokemonServiceImpl implements PokemonService {
 	/**
 	 * Este metodo obtiene el pokemon por id
 	 */
-//	@Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+	@Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
 	@Override
 	public Pokemon findPokemonById(String id) {
 		String url = API_BASE_URL + id;
