@@ -43,7 +43,7 @@ public class PokemonServiceImpl implements PokemonService{
     /**
      * Este metodo obtiene la lista de pokemones por parametros lazy
      * */
-//    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
+    @Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
     @Override
     public List<PokemonDTO> searchPokemonLazy(String offset, String limit) {
         logger.info("Obteniendo pokemones desde api - logger");
