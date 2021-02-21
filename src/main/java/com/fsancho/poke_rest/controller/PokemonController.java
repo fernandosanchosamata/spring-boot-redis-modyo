@@ -9,35 +9,50 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fsancho.poke_rest.model.PokemonDTO;
+import com.fsancho.poke_rest.dto.EvolutionDTO;
+import com.fsancho.poke_rest.dto.PokemonDTO;
+import com.fsancho.poke_rest.model.Pokemon;
 import com.fsancho.poke_rest.service.PokemonService;
+
+/**
+ * @author Fernando Sancho
+ *
+ */
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class PokemonController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PokemonController.class);
+	private static final Logger logger = LoggerFactory.getLogger(PokemonController.class);
 
-    @Autowired
-    private PokemonService pokemonService;
+	@Autowired
+	private PokemonService pokemonService;
 
-    @GetMapping(value = "/pokemones", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<?> getAll(@RequestParam(value = "offset", required = true) String offset,
-            @RequestParam(value = "limit", required = true) String limit) {
-        try {
+	@GetMapping(value = "/pokemones", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> getPokemones(@RequestParam(value = "offset", required = true) String offset,
+			@RequestParam(value = "limit", required = true) String limit) {
+		List<PokemonDTO> productos = pokemonService.searchPokemonLazy(offset, limit);
+		logger.info("Devolviendo pokemones");
+		return new ResponseEntity<>(productos, HttpStatus.OK);
+	}
 
-            List<PokemonDTO> productos = pokemonService.searchPokemonLazy(offset, limit);
-            logger.info("Devolviendo pokemones");
-            return new ResponseEntity<>(productos, HttpStatus.OK);
+	@GetMapping(value = "/evoluciones/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> getEvoluciones(@PathVariable("id") String id) {
+		List<EvolutionDTO> productos = pokemonService.findEvolutions(id);
+		logger.info("Devolviendo pokemones");
+		return new ResponseEntity<>(productos, HttpStatus.OK);
+	}
 
-        } catch (Exception e) {
-            logger.error("Produced exception:" + e.getMessage());
-            return new ResponseEntity<List<PokemonDTO>>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@GetMapping("/information/{id}")
+	@ResponseBody
+	Pokemon information(@PathVariable("id") String id) {
+		return pokemonService.findPokemonById(id);
+	}
 }

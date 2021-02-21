@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author Fernando Sancho
+ *
+ */
 @RestController
-@RequestMapping("api/v1/caches")
+@RequestMapping("api/caches")
 public class CacheController {
 	
 	private CacheManager cacheManager;

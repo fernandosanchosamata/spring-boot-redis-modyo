@@ -4,8 +4,11 @@ import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author Fernando Sancho
+ *
+ */
 @Configuration
-//@PropertySource("application.properties")
 public class RedisConfig {
 
 	@Bean
@@ -17,23 +20,4 @@ public class RedisConfig {
 		};
     }
 
-//	@Autowired
-//	private Environment env;
-//
-//    @Bean
-//    public LettuceConnectionFactory redisConnectionFactory(){
-//		RedisStandaloneConfiguration redisConf = new RedisStandaloneConfiguration();
-//		redisConf.setHostName(env.getProperty("spring.redis.host"));
-//		redisConf.setPort(Integer.parseInt(env.getProperty("spring.redis.port")));
-//		redisConf.setPassword(RedisPassword.of(env.getProperty("spring.redis.password")));
-//
-//		return new LettuceConnectionFactory(redisConf);
-//    }
-
-//	@Bean
-//	public RedisTemplate<String, Object> deliveryRedisTemplate(RedisConnectionFactory connectionFactory) {
-//		RedisTemplate<String, Object> template = new RedisTemplate<>();
-//		template.setConnectionFactory(connectionFactory);
-//		return template;
-//	}
 }

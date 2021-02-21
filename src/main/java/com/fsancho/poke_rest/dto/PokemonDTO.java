@@ -1,15 +1,19 @@
-package com.fsancho.poke_rest.model;
+package com.fsancho.poke_rest.dto;
 
 import java.io.Serializable;
 import java.util.List;
 
+import com.fsancho.poke_rest.model.Abilities;
+import com.fsancho.poke_rest.model.Types;
 
-public class Pokemon implements Serializable {
+/**
+ * @author Fernando Sancho
+ *
+ */
+public class PokemonDTO implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5119531849318563084L;
+
 	private String id;
 
 	private String name;
@@ -18,18 +22,8 @@ public class Pokemon implements Serializable {
 	private List<Abilities> abilities;
 	private List<Types> types;
 
-	private Sprites sprites;
-
-	public Pokemon() {
+	public PokemonDTO() {
 		super();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -64,20 +58,17 @@ public class Pokemon implements Serializable {
 		this.types = types;
 	}
 
-	public Sprites getSprites() {
-		return sprites;
-	}
-
-	public void setSprites(Sprites sprites) {
-		this.sprites = sprites;
-	}
-
-	public Pokemon(String name, String url, List<Abilities> abilities, List<Types> types) {
+	public PokemonDTO(String name, String url, List<Abilities> abilities, List<Types> types) {
 		super();
 		this.name = name;
 		this.url = url;
 		this.abilities = abilities;
 		this.types = types;
+	}
+
+	@Override
+	public String toString() {
+		return "PokemonDTO [id=" + id + ", name=" + name + ", url=" + url + ", abilities=" + abilities + ", types=" + types + "]";
 	}
 
 }

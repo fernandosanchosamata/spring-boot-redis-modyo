@@ -1,34 +1,54 @@
 package com.fsancho.pokerest.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-import com.fsancho.poke_rest.controller.PokemonController;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.client.RestTemplate;
+
+import com.fsancho.poke_rest.PokeRestApplication;
 
 
-
+@SpringBootTest(classes = PokeRestApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PokemonControllerTest {
 
-    private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new PokemonController()).build();
-    }
+		@LocalServerPort
+		int randomServerPort;
 
-//    @Test
-//    public void testHomePage() throws Exception {
-//        this.mockMvc.perform(get("/")).andExpect(status().isOk())
-//                .andExpect(content().string("This is Home page"));
-//    }
-//
-//    @Test
-//    public void testHelloPage() throws Exception {
-//        this.mockMvc.perform(get("/hello")).andExpect(status().isOk())
-//                .andExpect(content().string("Hello there!"));
-//    }
+		@Test
+		public void testPokemonesSuccess() throws URISyntaxException {
+			RestTemplate restTemplate = new RestTemplate();
+			final String baseUrl = "http://localhost:" + randomServerPort + "/api/pokemones?offset=1&limit=1";
+			URI uri = new URI(baseUrl);
+			ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+			Assertions.assertEquals(200, result.getStatusCodeValue());
+		}
+
+		@Test
+		public void testEvolucionesSuccess() throws URISyntaxException {
+			RestTemplate restTemplate = new RestTemplate();
+			final String baseUrl = "http://localhost:" + randomServerPort + "/api/evoluciones/" + 1;
+			URI uri = new URI(baseUrl);
+			ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+			Assertions.assertEquals(200, result.getStatusCodeValue());
+		}
+
+		@Test
+		public void testInformationSuccess() throws URISyntaxException {
+			RestTemplate restTemplate = new RestTemplate();
+			final String baseUrl = "http://localhost:" + randomServerPort + "/api/information/" + 1;
+			URI uri = new URI(baseUrl);
+			ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+			Assertions.assertEquals(200, result.getStatusCodeValue());
+		}
+
+
 }
