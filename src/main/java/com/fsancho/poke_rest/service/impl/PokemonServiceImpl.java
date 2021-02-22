@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.dozer.DozerBeanMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -22,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fsancho.poke_rest.config.redis.CacheConfig;
 import com.fsancho.poke_rest.dto.EvolutionDTO;
 import com.fsancho.poke_rest.dto.PokemonDTO;
+import com.fsancho.poke_rest.mapper.PokemonMapper;
 import com.fsancho.poke_rest.model.Pokemon;
 import com.fsancho.poke_rest.model.PokemonResponse;
 import com.fsancho.poke_rest.service.PokemonService;
@@ -39,6 +39,9 @@ public class PokemonServiceImpl implements PokemonService {
 	@Autowired
 	RestTemplate restTemplate;
 
+	@Autowired
+	PokemonMapper pokemonMapper;
+
 	/**
 	 * Este metodo obtiene la lista de pokemones por parametros lazy
 	 */
@@ -48,16 +51,16 @@ public class PokemonServiceImpl implements PokemonService {
 		logger.info("Obteniendo pokemones desde api - logger");
 		String url = API_BASE_URL + "/pokemon?limit=" + limit + "&offset=" + offset;
 		List<PokemonDTO> pokemonesDTO = new ArrayList<>();
+		List<Pokemon> pokemones = new ArrayList<>();
 		ResponseEntity<PokemonResponse> response = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(),
 				PokemonResponse.class);
-
-		List<Pokemon> pokemones = response.getBody().getResults();
+		PokemonResponse pokemonResponse = response.getBody();
+		if (pokemonResponse != null)
+			pokemones = pokemonResponse.getResults();
 
 		for (Pokemon pokemon : pokemones) {
-			pokemon = findPokemonById(API_ENDPOINT_POKEMON + getIdFromPokeUrl(pokemon.getUrl()));
-			PokemonDTO pokemonDTO = new DozerBeanMapper().map(pokemon, PokemonDTO.class);
+			PokemonDTO pokemonDTO = findPokemonById(API_ENDPOINT_POKEMON + getIdFromPokeUrl(pokemon.getUrl()));
 			pokemonesDTO.add(pokemonDTO);
-			System.out.println(pokemonDTO);
 		}
 		return pokemonesDTO;
 	}
@@ -71,7 +74,7 @@ public class PokemonServiceImpl implements PokemonService {
 		String url = API_BASE_URL + id;
 		List<EvolutionDTO> evoluciones = new ArrayList<>();
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(), String.class);
-		if (response.hasBody())
+		if (response.getBody() != null && response.hasBody())
 			prepareEvolves(response, evoluciones);
 
 		return evoluciones;
@@ -82,11 +85,11 @@ public class PokemonServiceImpl implements PokemonService {
 	 */
 	@Cacheable(cacheNames = CacheConfig.USER_CACHE, unless = "#result == null")
 	@Override
-	public Pokemon findPokemonById(String id) {
+	public PokemonDTO findPokemonById(String id) {
 		String url = API_BASE_URL + id;
 		ResponseEntity<Pokemon> responseEntity = restTemplate.exchange(url, HttpMethod.GET, getHttpEntity(),
 				Pokemon.class);
-		return responseEntity.getBody();
+		return pokemonMapper.pokemonToPokemonDto(responseEntity.getBody());
 	}
 
 	private HttpEntity<String> getHttpEntity() {

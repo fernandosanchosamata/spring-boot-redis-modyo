@@ -2,7 +2,7 @@ package com.fsancho.poke_rest.model;
 
 import java.io.Serializable;
 
-public class Sprites  implements Serializable{
+public class Sprites implements Serializable {
 
 	/**
 	 * 
@@ -13,6 +13,11 @@ public class Sprites  implements Serializable{
 
 	public Sprites() {
 		super();
+	}
+
+	public Sprites(String back_default) {
+		super();
+		this.back_default = back_default;
 	}
 
 	public String getBack_default() {

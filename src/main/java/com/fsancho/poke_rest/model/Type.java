@@ -2,7 +2,7 @@ package com.fsancho.poke_rest.model;
 
 import java.io.Serializable;
 
-public class Type  implements Serializable{
+public class Type implements Serializable {
 
 	/**
 	 * 
@@ -13,6 +13,11 @@ public class Type  implements Serializable{
 
 	public Type() {
 		super();
+	}
+
+	public Type(String name) {
+		super();
+		this.name = name;
 	}
 
 	public String getName() {

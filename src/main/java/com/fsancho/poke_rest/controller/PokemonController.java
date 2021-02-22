@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fsancho.poke_rest.dto.EvolutionDTO;
 import com.fsancho.poke_rest.dto.PokemonDTO;
-import com.fsancho.poke_rest.model.Pokemon;
 import com.fsancho.poke_rest.service.PokemonService;
 
 /**
@@ -38,7 +37,7 @@ public class PokemonController {
 
 	@GetMapping(value = "/pokemones", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getPokemones(@RequestParam(value = "offset", required = true) String offset,
+	public ResponseEntity<List<PokemonDTO>> getPokemones(@RequestParam(value = "offset", required = true) String offset,
 			@RequestParam(value = "limit", required = true) String limit) {
 		List<PokemonDTO> productos = this.pokemonService.searchPokemonLazy(offset, limit);
 		logger.info("Devolviendo pokemones");
@@ -47,7 +46,7 @@ public class PokemonController {
 
 	@GetMapping(value = "/evoluciones/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getEvoluciones(@PathVariable("id") String id) {
+	public ResponseEntity<List<EvolutionDTO>> getEvoluciones(@PathVariable("id") String id) {
 		List<EvolutionDTO> productos = this.pokemonService.findEvolutions(API_ENDPOINT_EVOLUCIONES + id);
 		logger.info("Devolviendo evoluciones");
 		return new ResponseEntity<>(productos, HttpStatus.OK);
@@ -55,7 +54,7 @@ public class PokemonController {
 
 	@GetMapping("/pokemon/{id}")
 	@ResponseBody
-	Pokemon information(@PathVariable("id") String id) {
+	public PokemonDTO information(@PathVariable("id") String id) {
 		logger.info("Devolviendo pokemon");
 		return this.pokemonService.findPokemonById(API_ENDPOINT_POKEMON + id);
 	}

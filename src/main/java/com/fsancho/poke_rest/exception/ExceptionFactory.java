@@ -1,5 +1,8 @@
 package com.fsancho.poke_rest.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fsancho.poke_rest.exception.enums.ExceptionType;
 
 /**
@@ -7,13 +10,22 @@ import com.fsancho.poke_rest.exception.enums.ExceptionType;
  *
  */
 public class ExceptionFactory {
-//	private static final Logger LOG = LoggerFactory.getLogger(ExceptionFactory.class);
+	
+	private static final Logger logger = LoggerFactory.getLogger(ExceptionFactory.class);
+	
+	
+
+	private ExceptionFactory() {
+		super();
+	}
 
 	public static ApplicationSpecificException create(final Throwable cause, final ExceptionType exceptionType, final Object... messageArguments) {
+		logger.error(exceptionType.getMessage());
 		return new ApplicationSpecificException(exceptionType, cause, messageArguments);
 	}
 
 	public static ApplicationSpecificException create(final ExceptionType exceptionType, final Object... messageArguments) {
+		logger.error(exceptionType.getMessage());
 		return new ApplicationSpecificException(exceptionType, messageArguments);
 	}
 }

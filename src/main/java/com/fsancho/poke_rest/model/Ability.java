@@ -28,4 +28,5 @@ public class Ability  implements Serializable{
 		this.name = name;
 	}
 
+	
 }

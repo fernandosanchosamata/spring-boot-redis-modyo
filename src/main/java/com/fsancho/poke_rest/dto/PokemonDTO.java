@@ -1,74 +1,80 @@
 package com.fsancho.poke_rest.dto;
 
 import java.io.Serializable;
-import java.util.List;
-
-import com.fsancho.poke_rest.model.Abilities;
-import com.fsancho.poke_rest.model.Types;
+import java.util.Arrays;
 
 /**
  * @author Fernando Sancho
  *
  */
-public class PokemonDTO implements Serializable{
+public class PokemonDTO implements Serializable {
 
 	private static final long serialVersionUID = 5119531849318563084L;
 
 	private String id;
-
-	private String name;
-	private String url;
-
-	private List<Abilities> abilities;
-	private List<Types> types;
+	private String nombre;
+	private String[] habilidades;
+	private String[] tipos;
+	private SpritesDTO imagenes;
+	private String peso;
 
 	public PokemonDTO() {
 		super();
+
 	}
 
-	public String getName() {
-		return name;
+	public String getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public List<Abilities> getAbilities() {
-		return abilities;
+	public String[] getHabilidades() {
+		return habilidades;
 	}
 
-	public void setAbilities(List<Abilities> abilities) {
-		this.abilities = abilities;
+	public void setHabilidades(String[] habilidades) {
+		this.habilidades = habilidades;
 	}
 
-	public List<Types> getTypes() {
-		return types;
+	public String[] getTipos() {
+		return tipos;
 	}
 
-	public void setTypes(List<Types> types) {
-		this.types = types;
+	public void setTipos(String[] tipos) {
+		this.tipos = tipos;
 	}
 
-	public PokemonDTO(String name, String url, List<Abilities> abilities, List<Types> types) {
-		super();
-		this.name = name;
-		this.url = url;
-		this.abilities = abilities;
-		this.types = types;
+	public SpritesDTO getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(SpritesDTO imagenes) {
+		this.imagenes = imagenes;
+	}
+
+	public String getPeso() {
+		return peso;
+	}
+
+	public void setPeso(String peso) {
+		this.peso = peso;
 	}
 
 	@Override
 	public String toString() {
-		return "PokemonDTO [id=" + id + ", name=" + name + ", url=" + url + ", abilities=" + abilities + ", types=" + types + "]";
+		return "PokemonDTO [id=" + id + ", nombre=" + nombre + ", habilidades=" + Arrays.toString(habilidades)
+				+ ", tipos=" + Arrays.toString(tipos) + ", imagenes=" + imagenes + ", peso=" + peso + "]";
 	}
 
 }

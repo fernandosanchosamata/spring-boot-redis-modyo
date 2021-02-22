@@ -23,4 +23,12 @@ public class Abilities  implements Serializable{
 		this.ability = ability;
 	}
 
+	public Abilities(Ability ability) {
+		super();
+		this.ability = ability;
+	}
+	
+	
+	
+
 }
