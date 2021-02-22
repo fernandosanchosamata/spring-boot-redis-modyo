@@ -62,7 +62,13 @@ curl http://stark-sands-15413.herokuapp.com/api/pokemon/1
 ```
 curl http://stark-sands-15413.herokuapp.com/api/evoluciones/1
 ```
+## Contrato con openapi ⚙️
 
+### Se utiliza swagger de openapi 🔩
+
+```
+http://stark-sands-15413.herokuapp.com/swagger-ui.html
+```
 ## Despliegue 📦
 
 _El despliegue es automatico a heroku, aplicando los comandos anteriormente mencionados, al realizar push se realiza compilacion e instalación._
@@ -75,6 +81,7 @@ _Herramientas destacadas_
 * [Maven](https://maven.apache.org/) - Manejador de dependencias
 * [Spring boot](https://start.spring.io/) - Plantilla de Proyecto de cero
 * Sonar Lint
+* OpenApi (swagger)
 
 ## Versionado 📌
 
