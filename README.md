@@ -1,7 +1,9 @@
 # Spring Boot con Redis  😊
 
 _El proyecto construido por solicitud de modyo para postulación de trabajo, es una aplicación spring boot el cual consume una api externa, los datos consultados son almacenados en una cache distribuida Redis. La aplicacion tiene una arquitectura multicapa, el consumo de api externa es por medio de restTemplate, excepciones son centralizadas con  "ControllerAdvice" además de crear una factory de excepciones._
+-Se implementa StructMapper-
 _Se utilizan pruebas unitarias con mockito y de integración_
+-Se valida con sonar-
 
 ## Comenzando 🚀
 
@@ -17,7 +19,6 @@ _ _
 - Maven 3.6.3
 - Cuenta Heroku 
 - Cuenta github
-- 
 ```
 
 ### Instalación 🔧
@@ -73,7 +74,7 @@ _Herramientas destacadas_
 * [redis](https://redis.io/) - cache distruida
 * [Maven](https://maven.apache.org/) - Manejador de dependencias
 * [Spring boot](https://start.spring.io/) - Plantilla de Proyecto de cero
-
+* Sonar Lint
 
 ## Versionado 📌
 
