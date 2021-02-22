@@ -1,22 +1,24 @@
-# spring-boot-redis-modyo
+# Spring Boot con Redis  😊
 
-# Título del Proyecto
-
-_Acá va un párrafo que describa lo que es el proyecto_
+_El proyecto construido por solicitud de modyo para postulación de trabajo_
 
 ## Comenzando 🚀
 
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
+_ _
 
 Mira **Deployment** para conocer como desplegar el proyecto.
 
 
 ### Pre-requisitos 📋
 
-_Que cosas necesitas para instalar el software y como instalarlas_
-
 ```
-Da un ejemplo
+- Eclipse 2020-12 o cualquiera de los ultimos
+- Junit 5
+- Java 8
+- Maven 3.6.3
+- Cuenta Heroku 
+- Cuenta github
+- 
 ```
 
 ### Instalación 🔧
@@ -84,4 +86,3 @@ Se utilizo [GitHub/spring-boot-redis-modyo](https://github.com/fernandosanchosam
 * **Fernando Alfredo Sancho Samata** - *Desarrollador java enterprise*
 
 ---
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊
